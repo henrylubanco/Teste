@@ -21,7 +21,7 @@ LIMPAR_AO_SAIR="sim"
 # Vazio = internet liberada.
 # Para restringir, liste os endereços separados por espaço, ex.:
 # SITES_PERMITIDOS="https://siss.exemplo.com.br/* https://*.saude.gov.br/*"
-SITES_PERMITIDOS="https://ambulatorialcampos.sissonline.com.br/*"
+SITES_PERMITIDOS=""
 # ---------------------------------------------------------------------
 
 [ "$(id -u)" -eq 0 ] || { echo "Execute como root."; exit 1; }
@@ -59,15 +59,22 @@ cat > /usr/local/bin/iniciar-quiosque <<EOF
 export XKB_DEFAULT_LAYOUT=br
 export XKB_DEFAULT_MODEL=abnt2
 export MOZ_ENABLE_WAYLAND=1
+export WLR_NO_HARDWARE_CURSORS=1   # evita cursor invisível em VMs e placas antigas
 
+# Sem aceleração 3D (máquina virtual, vídeo antigo), a GPU falha logo ao abrir.
+# Nesse caso, passa a desenhar a tela por software (pixman) automaticamente.
 while true; do
     if [ "$LIMPAR_AO_SAIR" = "sim" ]; then
         rm -rf "\$HOME/.mozilla" "\$HOME/.cache/mozilla"
     fi
+    INICIO=\$(date +%s)
     if [ "$MODO" = "quiosque" ]; then
         cage -s -- firefox-esr --kiosk "$URL_INICIAL"
     else
         cage -s -- firefox-esr "$URL_INICIAL"
+    fi
+    if [ \$(( \$(date +%s) - INICIO )) -lt 5 ] && [ -z "\${WLR_RENDERER:-}" ]; then
+        export WLR_RENDERER=pixman
     fi
     sleep 2   # se o navegador fechar ou travar, abre de novo
 done
