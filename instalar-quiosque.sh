@@ -21,7 +21,7 @@ LIMPAR_AO_SAIR="sim"
 # Vazio = internet liberada.
 # Para restringir, liste os endereços separados por espaço, ex.:
 # SITES_PERMITIDOS="https://siss.exemplo.com.br/* https://*.saude.gov.br/*"
-SITES_PERMITIDOS=""
+SITES_PERMITIDOS="https://ambulatorialcampos.sissonline.com.br/*"
 # ---------------------------------------------------------------------
 
 [ "$(id -u)" -eq 0 ] || { echo "Execute como root."; exit 1; }
