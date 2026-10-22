@@ -7,7 +7,7 @@
 set -euo pipefail
 
 # ----------------------- CONFIGURAÇÃO --------------------------------
-URL_INICIAL="https://COLOQUE-AQUI-O-ENDERECO-DO-SISS"
+URL_INICIAL="https://ambulatorialcampos.sissonline.com.br/login"
 
 # "navegador" = Firefox em tela cheia COM barra de endereço (navega na internet)
 # "quiosque"  = Firefox sem barra nenhuma, preso na URL inicial
